@@ -7,41 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-    <link href="functions.php">
+    <?php require "functions.php"?>
     <title>Симплекс метод результат</title>
 </head>
-
-<?php
-function debugToConsole($data)
-{
-    echo "<script>console.log('$data' + ' ');</script>";
-}
-
-function returnSign($number)
-{
-    switch ($number) {
-        case -1:
-        {
-            return '≤';
-            break;
-        }
-        case 0:
-        {
-            return '=';
-            break;
-        }
-        case 1:
-        {
-            return '≥';
-            break;
-        }
-        default:
-            return ' ';
-    }
-}
-
-
-?>
 
 <body>
 
@@ -105,7 +73,7 @@ $j = 0;
                 ?>
             </p>
 
-            <!--            МОжна запихнути в функцію разом з таблицею з рядка №166-->
+            <!--            МОжна запихнути в функцію разом з таблицею з рядка №135-->
             <table>
                 <tbody>
                 <?php for ($i = 0; $i < $rows; $i++): ?>
