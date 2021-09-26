@@ -15,6 +15,28 @@ function debugToConsole($data)
     echo "<script>console.log('$data' + ' ');</script>";
 }
 
+function returnSign($number)
+{
+    switch ($number) {
+        case 0:
+        {
+            return '=';
+            break;
+        }
+        case 1:
+        {
+            return '≥';
+            break;
+        }
+        case 2:
+        {
+            return '≤';
+            break;
+        }
+        default: return ' ';
+    }
+}
+
 ?>
 
 <body>
@@ -25,26 +47,25 @@ $rows = $_SESSION["functionRows"];
 $cols = $_SESSION["functionCols"] + 2;
 
 $table = [$rows][$cols];
-$straight = [$cols - 1];
+$straight = [$cols - 2];
 
 $i = 0;
 $j = 0;
-foreach ($_GET as $item) {
-    if ($i <= $rows - 1) $table[$i][$j] = $item;
-    else {
-        $straight[$j] = $item;
+{
+    foreach ($_GET as $item) {
+        if ($i <= $rows - 1) $table[$i][$j] = $item;
+        else {
+            $straight[$j] = $item;
+        }
+        $j++;
+        if ($j > $cols - 1) {
+            $j = 0;
+            $i++;
+        }
     }
-    $j++;
-    if ($j > $cols - 1) {
-        $j = 0;
-        $i++;
-    }
-}
-
 //  = - 0
 // >= - 1
 // <= - 2
-{
     for ($i = 0; $i < $rows; $i++) {
         $debugRes = "";
         for ($j = 0; $j < $cols; $j++) {
@@ -57,8 +78,32 @@ foreach ($_GET as $item) {
         $debugRes .= ($item . ' ');
     }
     debugToConsole($debugRes);
-// виведення масиву в консоль(перевірка чи не пустий)
-}
+}// виведення масиву в консоль(перевірка чи не пустий)
 ?>
+<br>
+<div class="container">
+    <ol style="list-style: none;">
+        <li>
+            <h1>#1 Умова</h1>
+            <p style="font-size: 20px">
+                <b><?php echo(($straight[$cols-2] == "min")? "мінімізувати" : "максимізувати" ).':';?></b>
+                <?php
+                if($straight[0] == 1) echo "x<sub>1</sub>";
+                    elseif ($straight[0] == -1) echo "-x<sub>1</sub>";
+                        else echo $straight[0]. "x<sub>1</sub>";
+
+                for($i = 1; $i <= count($straight) - 2; $i++)
+                {
+                    if($straight[$i] == 1) echo " +x<sub>".($i + 1)."</sub>";
+                        elseif ($straight[$i] == -1) echo " -x<sub>".($i + 1)."</sub>";
+                            elseif ($straight[$i] < 0) echo ' '.$straight[$i] . "x<sub>".($i + 1)."</sub>";
+                                else echo " +" . $straight[$i]. "x<sub>".($i + 1)."</sub>";
+                                                }
+                    ?>
+            </p>
+        </li>
+    </ol>
+</div>
+
 </body>
 </html>

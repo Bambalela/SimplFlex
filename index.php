@@ -81,7 +81,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <br>
+
+                <h5>x<sub> <?php echo 1; for ($i = 2; $i <= $cols; $i++) echo ','.$i?></sub>≥ 0</h5>
                 <button type="submit" class="btn btn-success mb-3">Обчислити</button>
             </form>
         </div>
