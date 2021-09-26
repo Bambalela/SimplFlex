@@ -154,23 +154,53 @@ $j = 0;
                     }
                 }
 
-            echo "finished finding negatives <br>";
-
             foreach ($negativeRows as $row)
             {
-                foreach ($table[$row] as $item)
+                for($i=0;$i<$cols;$i++)
                 {
-                    $item*=-1;
-                    echo $item . " ";
+                    $table[$row][$i] *= -1;
                 }
             }
-
-
-
             ?>
 
-
-
+            <table>
+                <tbody>
+                <?php for($i = 0; $i < $rows; $i++): ?>
+                    <tr>
+                        <?php for ($j = 0; $j < $cols - 2; $j++): ?>
+                            <td class="sign">
+                                <?php
+                                if ($table[$i][$j] < 0) echo '-';
+                                elseif ($j != 0) echo "+";
+                                else echo " " ?>
+                            </td>
+                            <td class="coef">
+                                <?php $coef = $table[$i][$j] * (($table[$i][$j] < 0) ? (-1) : 1);
+                                $isZero = false;
+                                if ($coef == 1) echo " ";
+                                elseif ($coef == 0) {
+                                    $isZero = true;
+                                    echo " ";
+                                } else echo $coef;
+                                ?>
+                            </td>
+                            <td class="index">
+                                <?php if (!$isZero): ?>
+                                    x<sub><?php echo $j + 1; ?></sub>
+                                <?php endif; ?>
+                            </td>
+                        <?php endfor; ?>
+                        <td class="equal">
+                            <?php echo returnSign($table[$i][count($table[$i]) - 2]); ?>
+                        </td>
+                        <td class="equal result">
+                            <?php echo $table[$i][count($table[$i]) - 1] ?>
+                        </td>
+                    </tr>
+                <?php endfor;?>
+                </tbody>
+            </table>
+            <br>
 
         </li>
     </ol>
