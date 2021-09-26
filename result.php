@@ -15,7 +15,6 @@ function debugToConsole($data)
 {
     echo "<script>console.log('$data' + ' ');</script>";
 }
-
 function returnSign($number)
 {
     switch ($number) {
@@ -38,6 +37,14 @@ function returnSign($number)
             return ' ';
     }
 }
+function buildTable($table, $straight)
+{
+    echo "
+    
+    
+    ";
+}
+
 ?>
 
 <body>
@@ -138,8 +145,36 @@ $j = 0;
                 <?php endfor;?>
                 </tbody>
             </table>
+            <br>
         </li>
+        <li>
+            <h1>#2 Позбуваємось негативних чисел в правій частині</h1>
+            <?php
+            $negativeRows = [$rows];
+            $negativeCount = 0;
+            for($i = 0; $i < $rows; $i++)
+                {
+                    if($table[$i][count($table[$i])-1] < 0){
+                        $negativeRows[$negativeCount] = $i;
+                        $negativeCount++;
+                    }
+                }
 
+            echo "finished finding negatives <br>";
+
+            foreach ($negativeRows as $row)
+            {
+                for($i = 0 ; $i < $rows; $i++){
+                    if($i!=count($row)-2){
+                        $row[$i]*=-1;
+                    }
+                }
+            }
+                echo "<br> finished for";
+            ?>
+
+
+        </li>
     </ol>
 </div>
 
