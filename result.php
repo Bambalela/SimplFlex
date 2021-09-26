@@ -38,7 +38,6 @@ function returnSign($number)
             return ' ';
     }
 }
-
 ?>
 
 <body>
@@ -104,16 +103,17 @@ $j = 0;
             </p>
             <table>
                 <tbody>
+                <?php for($i = 0; $i < $rows; $i++): ?>
                 <tr>
                     <?php for ($j = 0; $j < $cols - 2; $j++): ?>
                         <td class="sign">
                             <?php
-                            if ($table[0][$j] < 0) echo '-';
+                            if ($table[$i][$j] < 0) echo '-';
                             elseif ($j != 0) echo "+";
                             else echo " " ?>
                         </td>
                         <td class="coef">
-                            <?php $coef = $table[0][$j] * (($table[0][$j] < 0) ? (-1) : 1);
+                            <?php $coef = $table[$i][$j] * (($table[$i][$j] < 0) ? (-1) : 1);
                             $isZero = false;
                             if ($coef == 1) echo " ";
                             elseif ($coef == 0) {
@@ -129,16 +129,17 @@ $j = 0;
                         </td>
                     <?php endfor; ?>
                     <td class="equal">
-                        <?php echo returnSign($table[0][count($table[0]) - 2]); ?>
+                        <?php echo returnSign($table[$i][count($table[$i]) - 2]); ?>
                     </td>
                     <td class="equal result">
-                        <?php echo $table[0][count($table[0]) - 1] ?>
+                        <?php echo $table[$i][count($table[$i]) - 1] ?>
                     </td>
                 </tr>
-
+                <?php endfor;?>
                 </tbody>
             </table>
         </li>
+
     </ol>
 </div>
 
