@@ -53,7 +53,7 @@
                                         aria-label="Function parameters input">
                                     <option value="1">≥</option>
                                     <option value="0">=</option>
-                                    <option value="2" selected="">≤</option>
+                                    <option value="-1" selected="">≤</option>
                                 </select></td>
                             <td><input name="row-<?php echo $i ?>-B" class="form-control" style="width:80px" type="text"
                                        value="0"

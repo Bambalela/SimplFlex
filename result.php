@@ -18,6 +18,11 @@ function debugToConsole($data)
 function returnSign($number)
 {
     switch ($number) {
+        case -1:
+        {
+            return '≤';
+            break;
+        }
         case 0:
         {
             return '=';
@@ -28,22 +33,11 @@ function returnSign($number)
             return '≥';
             break;
         }
-        case 2:
-        {
-            return '≤';
-            break;
-        }
         default:
             return ' ';
     }
 }
-function buildTable($table, $straight)
-{
-    echo "
-    
-    
-    ";
-}
+
 
 ?>
 
@@ -164,14 +158,18 @@ $j = 0;
 
             foreach ($negativeRows as $row)
             {
-                for($i = 0 ; $i < $rows; $i++){
-                    if($i!=count($row)-2){
-                        $row[$i]*=-1;
-                    }
+                foreach ($table[$row] as $item)
+                {
+                    $item*=-1;
+                    echo $item . " ";
                 }
             }
-                echo "<br> finished for";
+
+
+
             ?>
+
+
 
 
         </li>
