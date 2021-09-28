@@ -173,9 +173,34 @@ $j = 0;
             <br>
         </li>
         <li>
-            <h1>#3 Додаємо базисні змінні</h1>
+            <h1>#3 Визначаємо метод</h1>
+            <?php
+            $allAreTheSame = true;
+            for($i=0;$i<$rows-1;$i++){
+                if($table[$i][count($table[$i])-2] != $table[$i+1][count($table[$i])-2]){
+                    $allAreTheSame = false;
+                    break;
+                }
+            } ?>
+            <br>
+
+            <?php if($allAreTheSame):?>
+                <table class="table table-success"><tr><td><h5>Вирішуємо за допомогою звичайного симплекс методу</h5></tr></td></table>
+            <?php else:?>
+                <table class="table table-warning"><tr><td><h5>Я не вмію вирішувати метод штучного базису (можливо зможу пізніше)</h5></tr></td></table>
+            <?php endif;?>
+
+            <!--            <h5><?php /*echo (($allAreTheSame)? "Вирішуємо за допомогою звичайного симплекс методу" :
+                            "Я не вмію вирішувати метод штучного базису (можливо зможу пізніше)") */?></h5>-->
+            <br>
+        </li>
+        <?php if($allAreTheSame): ?>
+        <li>
+            <h1>#4 Додаємо базисні змінні</h1>
 
         </li>
+
+        <?php endif;?>
     </ol>
 </div>
 

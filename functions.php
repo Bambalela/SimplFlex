@@ -5,7 +5,7 @@ function debugToConsole($data)
     echo "<script>console.log('$data' + ' ');</script>";
 }
 
-function returnSign($number)
+function returnSign($number): string
 {
     switch ($number) {
         case -1:
@@ -27,3 +27,4 @@ function returnSign($number)
             return ' ';
     }
 }
+
