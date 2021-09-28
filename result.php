@@ -114,7 +114,24 @@ $j = 0;
             <br>
         </li>
         <li>
-            <h1>#2 Позбуваємось негативних чисел в правій частині</h1>
+            <h1>#2 Позбуваємось негативних чисел в правій частині <?php if($straight[$cols - 2] == "min") echo "та приводимо до максимуму"; $straight[$cols - 2] = "max";?></h1>
+<!--                Зробити домноження на -1 крім зміна min на max-->
+            <p style="font-size: 20px">
+                <b><?php echo (($straight[$cols - 2] == "min") ? "мінімізувати" : "максимізувати") . ':'; ?></b>
+                <?php
+                if ($straight[0] == 1) echo "x<sub>1</sub>";
+                elseif ($straight[0] == -1) echo "-x<sub>1</sub>";
+                else echo $straight[0] . "x<sub>1</sub>";
+
+                for ($i = 1; $i <= count($straight) - 2; $i++) {
+                    if ($straight[$i] == 1) echo " +x<sub>" . ($i + 1) . "</sub>";
+                    elseif ($straight[$i] == -1) echo " -x<sub>" . ($i + 1) . "</sub>";
+                    elseif ($straight[$i] < 0) echo ' ' . $straight[$i] . "x<sub>" . ($i + 1) . "</sub>";
+                    else echo " +" . $straight[$i] . "x<sub>" . ($i + 1) . "</sub>";
+                }
+                ?>
+            </p>
+
             <?php
             $negativeRows = [$rows];
             $negativeCount = 0;
@@ -124,7 +141,6 @@ $j = 0;
                     $negativeCount++;
                 }
             }
-
             foreach ($negativeRows as $row) {
                 for ($i = 0; $i < $cols; $i++) {
                     $table[$row][$i] *= -1;
@@ -189,14 +205,81 @@ $j = 0;
             <?php else:?>
                 <table class="table table-warning"><tr><td><h5>Я не вмію вирішувати метод штучного базису (можливо зможу пізніше)</h5></tr></td></table>
             <?php endif;?>
-
-            <!--            <h5><?php /*echo (($allAreTheSame)? "Вирішуємо за допомогою звичайного симплекс методу" :
-                            "Я не вмію вирішувати метод штучного базису (можливо зможу пізніше)") */?></h5>-->
             <br>
         </li>
         <?php if($allAreTheSame): ?>
         <li>
             <h1>#4 Додаємо базисні змінні</h1>
+            <?php
+            $basisTableCols = $cols+$rows-1;
+            $basisTable = [$rows][$basisTableCols];
+            for($i=0;$i<$rows;$i++)
+            {
+                for($j=0;$j<$cols-2;$j++)
+                {
+                    $basisTable[$i][$j] = $table[$i][$j];
+                }
+            }
+            $k=0;
+            for($i=0;$i<$rows;$i++)
+            {
+                $m=0;
+                for($j=$cols-2;$j<$basisTableCols-1;$j++)
+                {
+                    if($m==$k) $basisTable[$i][$j] = 1; else
+                        $basisTable[$i][$j] = 0;
+                    $m++;
+                }
+                $k++;
+            }
+            for($i=0;$i<$rows;$i++){
+                $basisTable[$i][$basisTableCols-1]=$table[$i][$cols-1];
+            }
+            for ($i = 0; $i < $rows; $i++) {
+                $debugRes = "";
+                for ($j = 0; $j < $basisTableCols; $j++) {
+                    $debugRes .= ($basisTable[$i][$j] . " ");
+                }
+                debugToConsole($debugRes);
+            }
+
+            ?>
+            <!--            Запихнути в функцію-->
+            <table>
+                <tbody>
+                <?php for ($i = 0; $i < $rows; $i++): ?>
+                    <tr>
+                        <?php for ($j = 0; $j < $basisTableCols - 1; $j++): ?>
+                            <td class="sign">
+                                <?php
+                                if ($basisTable[$i][$j] < 0) echo '-';
+                                elseif ($j != 0) echo "+";
+                                else echo " " ?>
+                            </td>
+                            <td class="coef">
+                                <?php $coef = $basisTable[$i][$j] * (($basisTable[$i][$j] < 0) ? (-1) : 1);
+                                $isZero = false;
+                                if ($coef == 1) echo " ";
+                                elseif ($coef == 0) {
+                                    $isZero = true;
+                                    echo " ";
+                                } else echo $coef;
+                                ?>
+                            </td>
+                            <td class="index">
+                                <?php if (!$isZero): ?>
+                                    x<sub><?php echo $j + 1; ?></sub>
+                                <?php endif; ?>
+                            </td>
+                        <?php endfor; ?>
+                        <td class="equal">=</td>
+                        <td class="equal result">
+                            <?php echo $basisTable[$i][count($basisTable[$i]) - 1] ?>
+                        </td>
+                    </tr>
+                <?php endfor; ?>
+                </tbody>
+            </table>
 
         </li>
 
