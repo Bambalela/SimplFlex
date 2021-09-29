@@ -115,7 +115,7 @@ $j = 0;
         </li>
         <li>
             <?php $isMinimized = false;?>
-            <h1>#2 Позбуваємось негативних чисел в правій частині <?php if($straight[$cols - 2] == "min") echo "та приводимо до максимуму"; $isMinimized=true;?></h1>
+            <h1>#2 Позбуваємось негативних чисел в правій частині <?php if($straight[$cols - 2] == "min") {echo "та приводимо до максимуму"; $isMinimized=true;}?></h1>
 <!--                Зробити домноження на -1 крім зміна min на max-->
 
             <p style="font-size: 20px">
