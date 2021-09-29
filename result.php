@@ -19,7 +19,7 @@ $rows = $_SESSION["functionRows"];
 $cols = $_SESSION["functionCols"] + 2;
 
 $table = [$rows][$cols];
-$straight = [$cols - 2];
+$resultRow = [$cols - 2];
 
 $i = 0;
 $j = 0;
@@ -27,7 +27,7 @@ $j = 0;
     foreach ($_GET as $item) {
         if ($i <= $rows - 1) $table[$i][$j] = $item;
         else {
-            $straight[$j] = $item;
+            $resultRow[$j] = $item;
         }
         $j++;
         if ($j > $cols - 1) {
@@ -46,7 +46,7 @@ $j = 0;
         debugToConsole($debugRes);
     }
     $debugRes = "";
-    foreach ($straight as $item) {
+    foreach ($resultRow as $item) {
         $debugRes .= ($item . ' ');
     }
     debugToConsole($debugRes);
@@ -58,17 +58,17 @@ $j = 0;
         <li>
             <h1>#1 Умова</h1>
             <p style="font-size: 20px">
-                <b><?php echo (($straight[$cols - 2] == "min") ? "мінімізувати" : "максимізувати") . ':'; ?></b>
+                <b><?php echo (($resultRow[$cols - 2] == "min") ? "мінімізувати" : "максимізувати") . ':'; ?></b>
                 <?php
-                if ($straight[0] == 1) echo "x<sub>1</sub>";
-                elseif ($straight[0] == -1) echo "-x<sub>1</sub>";
-                else echo $straight[0] . "x<sub>1</sub>";
+                if ($resultRow[0] == 1) echo "x<sub>1</sub>";
+                elseif ($resultRow[0] == -1) echo "-x<sub>1</sub>";
+                else echo $resultRow[0] . "x<sub>1</sub>";
 
-                for ($i = 1; $i <= count($straight) - 2; $i++) {
-                    if ($straight[$i] == 1) echo " +x<sub>" . ($i + 1) . "</sub>";
-                    elseif ($straight[$i] == -1) echo " -x<sub>" . ($i + 1) . "</sub>";
-                    elseif ($straight[$i] < 0) echo ' ' . $straight[$i] . "x<sub>" . ($i + 1) . "</sub>";
-                    else echo " +" . $straight[$i] . "x<sub>" . ($i + 1) . "</sub>";
+                for ($i = 1; $i <= count($resultRow) - 2; $i++) {
+                    if ($resultRow[$i] == 1) echo " +x<sub>" . ($i + 1) . "</sub>";
+                    elseif ($resultRow[$i] == -1) echo " -x<sub>" . ($i + 1) . "</sub>";
+                    elseif ($resultRow[$i] < 0) echo ' ' . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
+                    else echo " +" . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
                 }
                 ?>
             </p>
@@ -115,29 +115,29 @@ $j = 0;
         </li>
         <li>
             <?php $isMinimized = false;?>
-            <h1>#2 Позбуваємось негативних чисел в правій частині <?php if($straight[$cols - 2] == "min") {echo "та приводимо до максимуму"; $isMinimized=true;}?></h1>
+            <h1>#2 Позбуваємось негативних чисел в правій частині <?php if($resultRow[$cols - 2] == "min") {echo "та приводимо до максимуму"; $isMinimized=true;}?></h1>
 <!--                Зробити домноження на -1 крім зміна min на max-->
 
             <p style="font-size: 20px">
                 <b><?php
                     if($isMinimized){
-                        for($i=0;$i<count($straight)-2;$i++)
+                        for($i=0;$i<count($resultRow)-1;$i++)
                         {
-                            $straight[$i]*=-1;
+                            $resultRow[$i]*=-1;
                         }
-                        $straight[$cols-2] = "max";
+                        $resultRow[$cols-2] = "max";
                     }
-                    echo (($straight[$cols - 2] == "min") ? "мінімізувати" : "максимізувати") . ':'; ?></b>
+                    echo (($resultRow[$cols - 2] == "min") ? "мінімізувати" : "максимізувати") . ':'; ?></b>
                 <?php
-                if ($straight[0] == 1) echo "x<sub>1</sub>";
-                elseif ($straight[0] == -1) echo "-x<sub>1</sub>";
-                else echo $straight[0] . "x<sub>1</sub>";
+                if ($resultRow[0] == 1) echo "x<sub>1</sub>";
+                elseif ($resultRow[0] == -1) echo "-x<sub>1</sub>";
+                else echo $resultRow[0] . "x<sub>1</sub>";
 
-                for ($i = 1; $i <= count($straight) - 2; $i++) {
-                    if ($straight[$i] == 1) echo " +x<sub>" . ($i + 1) . "</sub>";
-                    elseif ($straight[$i] == -1) echo " -x<sub>" . ($i + 1) . "</sub>";
-                    elseif ($straight[$i] < 0) echo ' ' . $straight[$i] . "x<sub>" . ($i + 1) . "</sub>";
-                    else echo " +" . $straight[$i] . "x<sub>" . ($i + 1) . "</sub>";
+                for ($i = 1; $i <= count($resultRow) - 2; $i++) {
+                    if ($resultRow[$i] == 1) echo " +x<sub>" . ($i + 1) . "</sub>";
+                    elseif ($resultRow[$i] == -1) echo " -x<sub>" . ($i + 1) . "</sub>";
+                    elseif ($resultRow[$i] < 0) echo ' ' . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
+                    else echo " +" . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
                 }
                 ?>
             </p>
@@ -291,8 +291,9 @@ $j = 0;
                 <?php endfor; ?>
                 </tbody>
             </table>
-
-        </li>
+        </li> <br>
+        <h1>#5 Вирішуємо за допомогою симплекс-таблиці</h1>
+        <?php simplexMethod($basisTable, $resultRow, $basisTableCols, $rows); ?>
 
         <?php endif;?>
     </ol>
