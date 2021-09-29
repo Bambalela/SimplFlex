@@ -114,10 +114,20 @@ $j = 0;
             <br>
         </li>
         <li>
-            <h1>#2 Позбуваємось негативних чисел в правій частині <?php if($straight[$cols - 2] == "min") echo "та приводимо до максимуму"; $straight[$cols - 2] = "max";?></h1>
+            <?php $isMinimized = false;?>
+            <h1>#2 Позбуваємось негативних чисел в правій частині <?php if($straight[$cols - 2] == "min") echo "та приводимо до максимуму"; $isMinimized=true;?></h1>
 <!--                Зробити домноження на -1 крім зміна min на max-->
+
             <p style="font-size: 20px">
-                <b><?php echo (($straight[$cols - 2] == "min") ? "мінімізувати" : "максимізувати") . ':'; ?></b>
+                <b><?php
+                    if($isMinimized){
+                        for($i=0;$i<count($straight)-2;$i++)
+                        {
+                            $straight[$i]*=-1;
+                        }
+                        $straight[$cols-2] = "max";
+                    }
+                    echo (($straight[$cols - 2] == "min") ? "мінімізувати" : "максимізувати") . ':'; ?></b>
                 <?php
                 if ($straight[0] == 1) echo "x<sub>1</sub>";
                 elseif ($straight[0] == -1) echo "-x<sub>1</sub>";
@@ -235,6 +245,7 @@ $j = 0;
             for($i=0;$i<$rows;$i++){
                 $basisTable[$i][$basisTableCols-1]=$table[$i][$cols-1];
             }
+            debugToConsole("");
             for ($i = 0; $i < $rows; $i++) {
                 $debugRes = "";
                 for ($j = 0; $j < $basisTableCols; $j++) {
