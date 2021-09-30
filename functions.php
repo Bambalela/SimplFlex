@@ -7,25 +7,12 @@ function debugToConsole($data)
 
 function returnSign($number): string
 {
-    switch ($number) {
-        case -1:
-        {
-            return '≤';
-            break;
-        }
-        case 0:
-        {
-            return '=';
-            break;
-        }
-        case 1:
-        {
-            return '≥';
-            break;
-        }
-        default:
-            return ' ';
-    }
+    return match ($number) {
+        -1 => '≤',
+        0 => '=',
+        1 => '≥',
+        default => ' ',
+    };
 }
 
 function indexOfMinNumber($array, bool $isCol): int
