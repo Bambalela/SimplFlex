@@ -53,7 +53,7 @@ $j = 0;
 }// виведення масиву в консоль(перевірка чи не пустий)
 ?>
 <br>
-<div class="container">
+<div class="container" style="margin-bottom: 50%">
     <ol style="list-style: none;">
         <li>
             <h1>#1 Умова</h1>
