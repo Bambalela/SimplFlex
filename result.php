@@ -293,7 +293,7 @@ $j = 0;
             </table>
         </li> <br>
         <h1>#5 Вирішуємо за допомогою симплекс-таблиці</h1>
-        <?php simplexMethod($basisTable, $resultRow, $basisTableCols, $rows); ?>
+        <?php simplexMethodMain($basisTable, $resultRow, $basisTableCols, $rows); ?>
 
         <?php endif;?>
     </ol>

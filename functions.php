@@ -54,7 +54,7 @@ function printSimplexTableOnes($table, $electedCol, $electedRow, $resultRow, $ba
         echo "</thead>";
         echo "<tbody>";
             for ($i = 0; $i < count($table)-1; $i++) {
-                echo (($electedRow == $i+1)?  "<tr class='table-warning'>" : "<tr>");
+                echo (($electedRow == $i+1)?  "<tr class='table-warning text-center' >" : "<tr class='text-center'>");
                 // Виведення Базису
                 echo "<th scope='row' class='text-center'>x<sub>" . $basis[$i] . "</sub></th>";
                 // Виведення C базисного
@@ -73,7 +73,7 @@ function printSimplexTableOnes($table, $electedCol, $electedRow, $resultRow, $ba
                 echo "</tr>";
             }
         echo "</tbody>";
-        echo "<tfoot>";
+        echo "<tfoot class='text-center'>";
             echo "<th scope='row' colspan='2' class='text-center'>ΔZ</th>";
             for($i=0;$i<count($table[count($table)-1]);$i++)
             {
@@ -85,7 +85,7 @@ function printSimplexTableOnes($table, $electedCol, $electedRow, $resultRow, $ba
     echo "</$table>";
 }
 
-function simplexMethod($table, $resultRow, $cols, $rows)
+function simplexMethodMain($table, $resultRow, $cols, $rows)
 {
     $basisTable = [$rows + 1][$cols + 1];
     $electedRow = -1;
