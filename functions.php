@@ -61,7 +61,7 @@ function printSimplexTableOnes($table, $electedCol, $electedRow, $resultRow, $ba
                 // Виведення C базисного
                 echo "<td class='text-center'>";
                 if($basis[$i] > count($table)-1) echo "0"; else
-                    echo $resultRow[$i];
+                    echo $resultRow[$basis[$i]-1];
                 echo "</td>";
                 //Виведення решти таблиці
 
@@ -113,9 +113,9 @@ function SimplexMethod($table1, $electedCol, $electedRow, $resultRow, $basis)
                     / $table1[$electedRow][$electedCol], 2);
             }
         }
-
+        $basis[$electedRow] = $electedCol;
         $electedCol = indexOfMinNumber($table2[count($table2)-1], true);
-        //echo "<br>Step 1 completed <br>" ;
+
         for($i = 0; $i < count($table2)-1;$i++) {
            // echo $i . ' ' . $electedCol . "<br>" . $table2[$i][0] . " " . $table2[$i][$electedCol] . "<br>";
             try {
@@ -141,7 +141,6 @@ function SimplexMethod($table1, $electedCol, $electedRow, $resultRow, $basis)
             debugToConsole($debugRes);
         }
         $table1 = $table2;
-
         echo "</li>";
     }
 }
@@ -184,9 +183,7 @@ function simplexMethodMain($table, $resultRow, $cols, $rows)
     debugToConsole(" ");
     debugToConsole("rez: " . $debugRes);
 
-
     $electedRow = indexOfMinNumber($lastCol, false);
-
 
     debugToConsole(" ");
     debugToConsole("simplex method table:");
@@ -202,4 +199,6 @@ function simplexMethodMain($table, $resultRow, $cols, $rows)
         $basisIndexes[$i] = $rows + $i + 1;
     }
     SimplexMethod($basisTable, $electedCol, $electedRow, $resultRow, $basisIndexes);
+
+
 }
