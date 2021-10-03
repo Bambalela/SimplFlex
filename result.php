@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
     <?php require "functions.php"?>
-    <title>Симплекс метод результат</title>
+    <title>Симплекс метод</title>
 </head>
 
 <body>

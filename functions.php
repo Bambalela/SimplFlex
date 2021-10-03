@@ -143,6 +143,13 @@ function SimplexMethod($table1, $electedCol, $electedRow, $resultRow, $basis)
         $table1 = $table2;
         echo "</li>";
     }
+    echo "<li>";
+        echo "<div class='container' style='background-color: #d3d3d3; border-radius: 10px;'> ";
+            echo "<p style='font-size: 20px'>Результат Виконання:       Z<sub>max</sub> = ";
+                echo $table2[count($table2) - 1][0];
+            echo "</p>";
+        echo "</div>";
+    echo "</li>";
 }
 
 function simplexMethodMain($table, $resultRow, $cols, $rows)
