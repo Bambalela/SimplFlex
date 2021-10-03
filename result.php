@@ -102,7 +102,9 @@ $j = 0;
                             </td>
                         <?php endfor; ?>
                         <td class="equal">
-                            <?php echo returnSign($table[$i][count($table[$i]) - 2]); ?>
+                            <?php echo returnSign($table[$i][count($table[$i]) - 2]);
+                                debugToConsole(($table[$i][count($table[$i]) - 2]));
+                            ?>
                         </td>
                         <td class="equal result">
                             <?php echo $table[$i][count($table[$i]) - 1] ?>
