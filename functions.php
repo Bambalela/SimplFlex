@@ -71,7 +71,7 @@ function printSimplexTableOnes($table, $electedCol, $electedRow, $resultRow, $ba
                         echo $table[$i][$j];
                     echo "</td>";
                 }
-                echo "<td>" . (($table[$i][count($table[$i])-1] == 0)? "-" : $table[$i][count($table[$i])-1]) . "</td>";
+                echo "<td>" . (($table[$i][count($table[$i])-1] <= 0)? "-" : $table[$i][count($table[$i])-1]) . "</td>";
 
                 echo "</tr>";
             }
