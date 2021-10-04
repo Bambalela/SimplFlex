@@ -176,8 +176,13 @@ function simplexMethodMain($table, $resultRow, $cols, $rows)
     $minColArr = $lastCol = [$rows];
     for ($i = 0; $i <= $rows; $i++) $minColArr[$i] = $basisTable[$i][$electedCol];
     for ($i = 0; $i < $rows; $i++) {
-        $lastCol[$i] = $table[$i][count($table[$i]) - 1] / $minColArr[$i];
-        if ($lastCol[$i] < 0) $lastCol[$i] = 0;
+        try {
+            $lastCol[$i] = $table[$i][count($table[$i]) - 1] / $minColArr[$i];
+            if ($lastCol[$i] < 0) $lastCol[$i] = 0;
+        } catch (DivisionByZeroError)
+        {
+            $lastCol[$i] = 0;
+        }
         // Якщо 0 значить прочерк
     }
     for ($i = 0; $i < $rows; $i++) {
