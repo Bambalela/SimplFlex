@@ -17,7 +17,7 @@ $rows = $_SESSION["functionRows"];
 $cols = $_SESSION["functionCols"] + 2;
 
 $table = [$rows][$cols];
-$resultRow = [$cols - 2];
+$resultRow = [$cols - 1];
 
 $i = 0;
 $j = 0;
@@ -35,7 +35,7 @@ $j = 0;
     }
 //  = - 0
 // >= - 1
-// <= - 2
+// <= - -1
     for ($i = 0; $i < $rows; $i++) {
         $debugRes = "";
         for ($j = 0; $j < $cols; $j++) {
@@ -44,6 +44,7 @@ $j = 0;
 
         debugToConsole($debugRes);
     }
+    debugToConsole("resultRow");
     $debugRes = "";
     foreach ($resultRow as $item) {
         $debugRes .= ($item . ' ');
@@ -57,54 +58,22 @@ $j = 0;
 <div class="container" style="margin-bottom: 50%">
     <ol style="list-style: none;">
         <li>
-            <h1>#1 Умова</h1>
-            <p style="font-size: 20px">
-                <b><?php echo (($resultRow[$cols - 2] == "min") ? "мінімізувати" : "максимізувати") . ':'; ?></b>
-                <?php
-                if ($resultRow[0] == 1) echo "x<sub>1</sub>";
-                elseif ($resultRow[0] == -1) echo "-x<sub>1</sub>";
-                else echo $resultRow[0] . "x<sub>1</sub>";
-
-                for ($i = 1; $i <= count($resultRow) - 2; $i++) {
-                    if ($resultRow[$i] == 1) echo " +x<sub>" . ($i + 1) . "</sub>";
-                    elseif ($resultRow[$i] == -1) echo " -x<sub>" . ($i + 1) . "</sub>";
-                    elseif ($resultRow[$i] < 0) echo ' ' . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
-                    else echo " +" . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
-                }
-                ?>
+            <h1>#1 Умова </h1>
+            <p>
+            <?php
+                buildFunction($cols, $resultRow);
+                buildFunctionsTable($rows,$cols,$table); ?>
             </p>
-
-            <?php buildFunctionsTable($rows,$cols,$table); ?>
-
             <br>
         </li>
         <li>
             <?php $isMinimized = false;?>
             <h1>#2 Позбуваємось негативних чисел в правій частині <?php if($resultRow[$cols - 2] == "min") {echo "та приводимо до максимуму"; $isMinimized=true;}?></h1>
             <p style="font-size: 20px">
-                <b><?php
-                    if($isMinimized){
-                        for($i=0;$i<count($resultRow)-1;$i++)
-                        {
-                            $resultRow[$i]*=-1;
-                        }
-                        $resultRow[$cols-2] = "max";
-                    }
-                    echo (($resultRow[$cols - 2] == "min") ? "мінімізувати" : "максимізувати") . ':'; ?></b>
                 <?php
-                if ($resultRow[0] == 1) echo "x<sub>1</sub>";
-                elseif ($resultRow[0] == -1) echo "-x<sub>1</sub>";
-                else echo $resultRow[0] . "x<sub>1</sub>";
-
-                for ($i = 1; $i <= count($resultRow) - 2; $i++) {
-                    if ($resultRow[$i] == 1) echo " +x<sub>" . ($i + 1) . "</sub>";
-                    elseif ($resultRow[$i] == -1) echo " -x<sub>" . ($i + 1) . "</sub>";
-                    elseif ($resultRow[$i] < 0) echo ' ' . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
-                    else echo " +" . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
-                }
-                ?>
+                buildFunction($cols, $resultRow);
+                buildFunctionsTable($rows,$cols,$table); ?>
             </p>
-
             <?php
             $negativeRows = [$rows];
             $negativeCount = 0;
@@ -121,41 +90,45 @@ $j = 0;
             }
             ?>
 
-            <?php buildFunctionsTable($rows,$cols,$table); ?>
-
             <br>
         </li>
         <li>
             <h1>#3 Визначаємо метод</h1>
             <?php
-            $allAreTheSame = true;
+            $equalExists = false;
             for($i=0;$i<$rows-1;$i++){
-                if($table[$i][count($table[$i])-2] != $table[$i+1][count($table[$i])-2]){
-                    $allAreTheSame = false;
+                if($table[$i][count($table[$i])-2] == 0){
+                    echo "<table class='table table-warning'><tr><td><h5>Я не вмію вирішувати метод штучного базису (можливо зможу пізніше)</h5></tr></td></table>";
+                    $equalExists = true;
                     break;
                 }
-            } ?>
-            <br>
+            }
+            if(!$equalExists)
+            {
+                $dealWithCasual = true;
+                    for($i = 0; $i < $rows - 1; $i++)
+                    {
+                        if($table[$i][count($table[$i])-2] != $table[$i+1][count($table[$i])-2]){
+                            $dealWithCasual = false;
+                            break;
+                        }
+                    }
+                    echo "<table class='table table-success'><tr><td><h5>Вирішуємо за допомогою";
+                    echo (($dealWithCasual)? " звичайного" : " двоїстого");
+                    echo " симплекс-методу </h5></tr></td></table>";
+            }
+            ?>
 
-            <?php if($allAreTheSame):?>
-                <table class="table table-success"><tr><td><h5>Вирішуємо за допомогою звичайного симплекс методу</h5></tr></td></table>
-            <?php else:?>
-                <table class="table table-warning"><tr><td><h5>Я не вмію вирішувати метод штучного базису (можливо зможу пізніше)</h5></tr></td></table>
-            <?php endif;?>
             <br>
         </li>
-        <?php if($allAreTheSame): ?>
-        <li>
-            <h1>#4 Додаємо базисні змінні</h1>
-            <?php
-            $basisTable = makeBasisTable($rows, $cols, $table);
-            buildFunctionsTable($rows, $cols + $rows, $basisTable);
-            ?>
-        </li> <br>
-        <h1>#5 Вирішуємо за допомогою симплекс-таблиці</h1>
-        <?php simplexMethodMain($basisTable, $resultRow, $cols + $rows, $rows); ?>
+        <?php
+            if(!$equalExists){
+                if($dealWithCasual) dealWithCasual($rows, $cols, $table, $resultRow);
+                else dealWithDoubled($table, $resultRow);
+            }
 
-        <?php endif;?>
+        ?>
+
     </ol>
 </div>
 

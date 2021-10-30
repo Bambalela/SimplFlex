@@ -40,6 +40,22 @@ function buildFunctionsTable($rows,$cols,$table){
             echo "</table>";
 }
 
+function buildFunction($cols, $resultRow){
+    echo "<p style='font-size: 20px'>";
+            echo "<b>" . (($resultRow[$cols - 2] == "min") ? "Мінімізувати" : "Максимізувати") . ': ' ."</b>";
+                if ($resultRow[0] == 1) echo "x<sub>1</sub>";
+                elseif ($resultRow[0] == -1) echo "-x<sub>1</sub>";
+                else echo $resultRow[0] . "x<sub>1</sub>";
+
+        for ($i = 1; $i <= count($resultRow) - 2; $i++) {
+            if ($resultRow[$i] == 1) echo " +x<sub>" . ($i + 1) . "</sub>";
+            elseif ($resultRow[$i] == -1) echo " -x<sub>" . ($i + 1) . "</sub>";
+            elseif ($resultRow[$i] < 0) echo ' ' . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
+            else echo " +" . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
+        }
+    echo "</p>";
+}
+
 function makeBasisTable($rows, $cols, $table){
     $basisTableCols = $cols+$rows;
     $basisTable = [$rows][$basisTableCols];
@@ -205,7 +221,7 @@ function SimplexMethod($table1, $electedCol, $electedRow, $resultRow, $basis)
         for($i = 0; $i < count($table2) - 2;$i++) {
             $test .= $lastCol[$i] . " ";
         }
-        debugToConsole("lastRow: " . $test);
+        debugToConsole("lastCol: " . $test);
         $electedRow = indexOfMinNumber($lastCol, false);
         debugToConsole("elatedRow = " . $electedRow);
         debugToConsole(" ");
@@ -289,5 +305,15 @@ function simplexMethodMain($table, $resultRow, $cols, $rows)
     }
     SimplexMethod($basisTable, $electedCol, $electedRow, $resultRow, $basisIndexes);
 
+}
 
+function dealWithCasual($rows, $cols, $table, $resultRow){
+    echo "<li>";
+            echo "<h1>#4 Додаємо базисні змінні</h1>";
+            $basisTable = makeBasisTable($rows, $cols, $table);
+            buildFunctionsTable($rows, $cols + $rows, $basisTable);
+        echo "</li> <br>";
+        echo "<h1>#5 Вирішуємо за допомогою симплекс-таблиці</h1>";
+
+        simplexMethodMain($basisTable, $resultRow, $cols + $rows, $rows);
 }
