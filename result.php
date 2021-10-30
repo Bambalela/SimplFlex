@@ -107,29 +107,25 @@ $j = 0;
                     break;
                 }
             }
-            if(!$equalExists)
+
+            $dealWithCasual = true;
+            for($i = 0; $i < $rows - 1; $i++)
             {
-                $dealWithCasual = true;
-                    for($i = 0; $i < $rows - 1; $i++)
-                    {
-                        if($table[$i][count($table[$i])-2] != $table[$i+1][count($table[$i])-2]){
-                            $dealWithCasual = false;
-                            break;
-                        }
-                    }
-                    echo "<table class='table table-success'><tr><td><h5>Вирішуємо за допомогою";
-                    echo (($dealWithCasual)? " звичайного" : " двоїстого");
-                    echo " симплекс-методу </h5></tr></td></table>";
+                if($table[$i][count($table[$i])-2] != $table[$i+1][count($table[$i])-2]){
+                    $dealWithCasual = false;
+                    break;
+                }
             }
+            echo "<table class='table table-success'><tr><td><h5>Вирішуємо за допомогою ";
+            if($dealWithCasual) echo "звичайного";
+                elseif(!$equalExists) echo "двоїстого";
+            echo " симплекс-методу </h5></tr></td></table>";
             ?>
 
         </li>
         <?php
-            if(!$equalExists){
-                if($dealWithCasual) dealWithCasual($rows, $cols, $table, $resultRow);
-                else dealWithDoubled($table, $resultRow);
-            }
-
+            if($dealWithCasual) dealWithCasual($rows, $cols, $table, $resultRow);
+            elseif(!$equalExists) dealWithDoubled($table, $resultRow);
         ?>
 
     </ol>
