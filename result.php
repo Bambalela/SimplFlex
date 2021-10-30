@@ -72,13 +72,9 @@ $j = 0;
         <li>
             <?php $isMinimized = false;?>
             <h1>#2 Позбуваємось негативних чисел в правій частині <?php if($resultRow[$cols - 2] == "min") {echo "та приводимо до максимуму"; $isMinimized=true;}?></h1>
-            <p style="font-size: 20px">
-                <?php
-                buildFunction($cols, $resultRow);
-                buildFunctionsTable($rows,$cols,$table); ?>
-            </p>
+
             <?php
-            $negativeRows = [$rows];
+            //$negativeRows = [$rows];
             $negativeCount = 0;
             for ($i = 0; $i < $rows; $i++) {
                 if ($table[$i][count($table[$i]) - 1] < 0) {
@@ -91,8 +87,13 @@ $j = 0;
                     $table[$row][$i] *= -1;
                 }
             }
-            ?>
 
+            ?>
+            <p style="font-size: 20px">
+                <?php
+                buildFunction($cols, $resultRow);
+                buildFunctionsTable($rows,$cols,$table); ?>
+            </p>
             <br>
         </li>
         <li>
@@ -122,7 +123,6 @@ $j = 0;
             }
             ?>
 
-            <br>
         </li>
         <?php
             if(!$equalExists){

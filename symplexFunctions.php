@@ -316,4 +316,5 @@ function dealWithCasual($rows, $cols, $table, $resultRow){
         echo "<h1>#5 Вирішуємо за допомогою симплекс-таблиці</h1>";
 
         simplexMethodMain($basisTable, $resultRow, $cols + $rows, $rows);
+    echo "</li>";
 }
