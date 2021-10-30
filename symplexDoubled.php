@@ -26,7 +26,11 @@ function doubledSimplexMethodMain($table, $resultRow){
         $simplexTable[$rows][$i] = 0;
     }
 
-
+    // О з перекресленням заповнення
+    for($i = 0;$i < $rows; $i++) $tempArr[$i] = $simplexTable[$i][0];
+    $electedNumber = min($tempArr);
+    for($i = 0;$i < $rows; $i++) if($tempArr[$i] == $electedNumber){ $electedRow = $i; break; }
+    debugToConsole("elected row " . $electedRow);
 
 }
 
