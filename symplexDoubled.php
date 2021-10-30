@@ -15,6 +15,18 @@ function doubledSimplexMethodMain($table, $resultRow){
         }
     }
 
+    // m + 1 рядок заповненння
+    $simplexTable[$rows][0] = 0;
+    for($i = 0;$i < count($resultRow) - 1; $i++)
+    {
+        $simplexTable[$rows][$i + 1] = $resultRow[$i];
+    }
+    for($i = count($resultRow);$i < $cols; $i++)
+    {
+        $simplexTable[$rows][$i] = 0;
+    }
+
+
 
 }
 
