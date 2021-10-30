@@ -58,7 +58,7 @@ function buildFunction($cols, $resultRow){
 
 function makeBasisTable($rows, $cols, $table){
     $basisTableCols = $cols+$rows;
-    $basisTable = [$rows][$basisTableCols];
+    //$basisTable = [$rows][$basisTableCols];
     for($i=0;$i<$rows;$i++)
     {
         for($j=0;$j<$cols-2;$j++)

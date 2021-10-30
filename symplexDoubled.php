@@ -2,6 +2,19 @@
 require "symplexFunctions.php";
 
 function doubledSimplexMethodMain($table, $resultRow){
+    $rows = count($table);
+    $cols = count($table[0]);
+
+    for($i = 0;$i < $rows; $i++)
+    {
+        $debugRes = "";
+        $simplexTable[$i][0] = $table[$i][$cols-1];
+        for($j = 1;$j < $cols - 1; $j++)
+        {
+            $simplexTable[$i][$j] = $table[$i][$j - 1];
+        }
+    }
+
 
 }
 
@@ -28,6 +41,6 @@ function dealWithDoubled($table, $resultRow){
         buildFunctionsTable($rows, $cols + $rows, $basisTable);
 
     echo "<br><h1>#6 Вирішуємо за допомогою двоїстої симплекс-таблиці</h1>";
-        doubledSimplexMethodMain($table, $resultRow);
+        doubledSimplexMethodMain($basisTable, $resultRow);
     echo "</li>";
 }
