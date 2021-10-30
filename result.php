@@ -148,48 +148,12 @@ $j = 0;
         <li>
             <h1>#4 Додаємо базисні змінні</h1>
             <?php
-            $basisTableCols = $cols+$rows-1;
-            $basisTable = [$rows][$basisTableCols];
-            for($i=0;$i<$rows;$i++)
-            {
-                for($j=0;$j<$cols-2;$j++)
-                {
-                    $basisTable[$i][$j] = $table[$i][$j];
-                }
-            }
-            $k=0;
-            for($i=0;$i<$rows;$i++)
-            {
-                $m=0;
-                for($j=$cols-2;$j<$basisTableCols-1;$j++)
-                {
-                    if($m==$k) $basisTable[$i][$j] = 1; else
-                        $basisTable[$i][$j] = 0;
-                    $m++;
-                }
-                $k++;
-            }
-            for($i=0;$i<$rows;$i++){
-                $basisTable[$i][$basisTableCols-1]=$table[$i][$cols-1];
-            }
-            debugToConsole("");
-            for ($i = 0; $i < $rows; $i++) {
-                $debugRes = "";
-                for ($j = 0; $j < $basisTableCols; $j++) {
-                    $debugRes .= ($basisTable[$i][$j] . " ");
-                }
-                debugToConsole($debugRes);
-            }
-            for ($i = 0; $i < $rows; $i++){
-                $basisTable[$i][$basisTableCols-2] = 0;
-            }
+            $basisTable = makeBasisTable($rows, $cols, $table);
+            buildFunctionsTable($rows, $cols + $rows, $basisTable);
             ?>
-
-            <?php buildFunctionsTable($rows,$basisTableCols + 1,$basisTable); ?>
-
         </li> <br>
         <h1>#5 Вирішуємо за допомогою симплекс-таблиці</h1>
-        <?php simplexMethodMain($basisTable, $resultRow, $basisTableCols, $rows); ?>
+        <?php simplexMethodMain($basisTable, $resultRow, $cols + $rows, $rows); ?>
 
         <?php endif;?>
     </ol>

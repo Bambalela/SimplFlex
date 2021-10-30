@@ -40,7 +40,42 @@ function buildFunctionsTable($rows,$cols,$table){
             echo "</table>";
 }
 
+function makeBasisTable($rows, $cols, $table){
+    $basisTableCols = $cols+$rows;
+    $basisTable = [$rows][$basisTableCols];
+    for($i=0;$i<$rows;$i++)
+    {
+        for($j=0;$j<$cols-2;$j++)
+        {
+            $basisTable[$i][$j] = $table[$i][$j];
+        }
+    }
+    $k=0;
+    for($i=0;$i<$rows;$i++)
+    {
+        $m=0;
+        for($j=$cols-2;$j<$basisTableCols-1;$j++)
+        {
+            if($m==$k) $basisTable[$i][$j] = 1; else
+                $basisTable[$i][$j] = 0;
+            $m++;
+        }
+        $k++;
+    }
+    for($i=0;$i<$rows;$i++){
+        $basisTable[$i][$basisTableCols-1]=$table[$i][$cols-1];
+    }
+    debugToConsole("");
+    for ($i = 0; $i < $rows; $i++) {
+        $debugRes = "";
+        for ($j = 0; $j < $basisTableCols; $j++) {
+            $debugRes .= ($basisTable[$i][$j] . " ");
+        }
+        debugToConsole($debugRes);
+    }
 
+    return $basisTable;
+}
 function debugToConsole($data)
 {
     echo "<script>console.log('$data' + ' ');</script>";
@@ -158,17 +193,18 @@ function SimplexMethod($table1, $electedCol, $electedRow, $resultRow, $basis)
         $electedCol = indexOfMinNumber($table2[count($table2)-1], true);
 
         for($i = 0; $i < count($table2)-1;$i++) {
-           // echo $i . ' ' . $electedCol . "<br>" . $table2[$i][0] . " " . $table2[$i][$electedCol] . "<br>";
-//            try {
+            try {
                 $lastCol[$i] = round($table2[$i][0] / $table2[$i][$electedCol], 2);
-            /*} catch(DivisionByZeroError) {
+            } catch(DivisionByZeroError $e) {
                 $lastCol[$i] = 0;
-            }*/
+            }
         }
         for($i = 0; $i < count($table2)-1;$i++) $table2[$i][count($table2[$i])-1] = $lastCol[$i];
         debugToConsole("elatedCol = " . $electedCol);
         $test = "";
-        for($i = 0; $i < count($table2);$i++) $test .= $lastCol[$i] . " ";
+        for($i = 0; $i < count($table2) - 2;$i++) {
+            $test .= $lastCol[$i] . " ";
+        }
         debugToConsole("lastRow: " . $test);
         $electedRow = indexOfMinNumber($lastCol, false);
         debugToConsole("elatedRow = " . $electedRow);
@@ -217,13 +253,13 @@ function simplexMethodMain($table, $resultRow, $cols, $rows)
     $minColArr = $lastCol = [$rows];
     for ($i = 0; $i <= $rows; $i++) $minColArr[$i] = $basisTable[$i][$electedCol];
     for ($i = 0; $i < $rows; $i++) {
-//        try {
+        try {
             $lastCol[$i] = $table[$i][count($table[$i]) - 1] / $minColArr[$i];
             if ($lastCol[$i] < 0) $lastCol[$i] = 0;
-        /*} catch (DivisionByZeroError)
+        } catch (DivisionByZeroError $e)
         {
             $lastCol[$i] = 0;
-        }*/
+        }
         // Якщо 0 значить прочерк
     }
     for ($i = 0; $i < $rows; $i++) {
