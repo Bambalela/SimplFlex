@@ -1,5 +1,46 @@
 <?php
 
+function buildFunctionsTable($rows,$cols,$table){
+    echo "<table>";
+                echo "<tbody>";
+                for ($i = 0; $i < $rows; $i++){
+                    echo "<tr>";
+                        for ($j = 0; $j < $cols - 2; $j++){
+                            echo "<td class='sign'>";
+                                if ($table[$i][$j] < 0) echo '-';
+                                elseif ($j != 0) echo "+";
+                                else echo " ";
+                            echo "</td>";
+                            echo "<td class='coef'>";
+                                $coef = $table[$i][$j] * (($table[$i][$j] < 0) ? (-1) : 1);
+                                $isZero = false;
+                                if ($coef == 1) echo " ";
+                                elseif ($coef == 0) {
+                                    $isZero = true;
+                                    echo " ";
+                                } else echo $coef;
+                            echo "</td>";
+                            echo "<td class='index'>";
+                                if (!$isZero){
+                                    echo "x<sub>" . ($j + 1) . "</sub>";
+                                }
+                            echo "</td>";
+                        }
+                        echo "<td class='equal'>";
+                            echo returnSign($table[$i][count($table[$i]) - 2]);
+                                debugToConsole(($table[$i][count($table[$i]) - 2]));
+
+                        echo "</td>";
+                        echo "<td class='equal result'>";
+                            echo $table[$i][count($table[$i]) - 1];
+                        echo "</td>";
+                    echo "</tr>";
+                }
+                echo "</tbody>";
+            echo "</table>";
+}
+
+
 function debugToConsole($data)
 {
     echo "<script>console.log('$data' + ' ');</script>";
@@ -118,11 +159,11 @@ function SimplexMethod($table1, $electedCol, $electedRow, $resultRow, $basis)
 
         for($i = 0; $i < count($table2)-1;$i++) {
            // echo $i . ' ' . $electedCol . "<br>" . $table2[$i][0] . " " . $table2[$i][$electedCol] . "<br>";
-            try {
+//            try {
                 $lastCol[$i] = round($table2[$i][0] / $table2[$i][$electedCol], 2);
-            } catch (DivisionByZeroError){
+            /*} catch(DivisionByZeroError) {
                 $lastCol[$i] = 0;
-            }
+            }*/
         }
         for($i = 0; $i < count($table2)-1;$i++) $table2[$i][count($table2[$i])-1] = $lastCol[$i];
         debugToConsole("elatedCol = " . $electedCol);
@@ -176,13 +217,13 @@ function simplexMethodMain($table, $resultRow, $cols, $rows)
     $minColArr = $lastCol = [$rows];
     for ($i = 0; $i <= $rows; $i++) $minColArr[$i] = $basisTable[$i][$electedCol];
     for ($i = 0; $i < $rows; $i++) {
-        try {
+//        try {
             $lastCol[$i] = $table[$i][count($table[$i]) - 1] / $minColArr[$i];
             if ($lastCol[$i] < 0) $lastCol[$i] = 0;
-        } catch (DivisionByZeroError)
+        /*} catch (DivisionByZeroError)
         {
             $lastCol[$i] = 0;
-        }
+        }*/
         // Якщо 0 значить прочерк
     }
     for ($i = 0; $i < $rows; $i++) {

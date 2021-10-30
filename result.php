@@ -7,11 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-    <?php require "functions.php"?>
+    <?php require "symplexFunctions.php"?>
     <title>Симплекс метод</title>
 </head>
-
-<body>
 
 <?php
 session_start();
@@ -43,6 +41,7 @@ $j = 0;
         for ($j = 0; $j < $cols; $j++) {
             $debugRes .= ($table[$i][$j] . " ");
         }
+
         debugToConsole($debugRes);
     }
     $debugRes = "";
@@ -52,6 +51,8 @@ $j = 0;
     debugToConsole($debugRes);
 }// виведення масиву в консоль(перевірка чи не пустий)
 ?>
+
+<body>
 <br>
 <div class="container" style="margin-bottom: 50%">
     <ol style="list-style: none;">
@@ -73,53 +74,13 @@ $j = 0;
                 ?>
             </p>
 
-            <!--            МОжна запихнути в функцію разом з таблицею з рядка №135-->
-            <table>
-                <tbody>
-                <?php for ($i = 0; $i < $rows; $i++): ?>
-                    <tr>
-                        <?php for ($j = 0; $j < $cols - 2; $j++): ?>
-                            <td class="sign">
-                                <?php
-                                if ($table[$i][$j] < 0) echo '-';
-                                elseif ($j != 0) echo "+";
-                                else echo " " ?>
-                            </td>
-                            <td class="coef">
-                                <?php $coef = $table[$i][$j] * (($table[$i][$j] < 0) ? (-1) : 1);
-                                $isZero = false;
-                                if ($coef == 1) echo " ";
-                                elseif ($coef == 0) {
-                                    $isZero = true;
-                                    echo " ";
-                                } else echo $coef;
-                                ?>
-                            </td>
-                            <td class="index">
-                                <?php if (!$isZero): ?>
-                                    x<sub><?php echo $j + 1; ?></sub>
-                                <?php endif; ?>
-                            </td>
-                        <?php endfor; ?>
-                        <td class="equal">
-                            <?php echo returnSign($table[$i][count($table[$i]) - 2]);
-                                debugToConsole(($table[$i][count($table[$i]) - 2]));
-                            ?>
-                        </td>
-                        <td class="equal result">
-                            <?php echo $table[$i][count($table[$i]) - 1] ?>
-                        </td>
-                    </tr>
-                <?php endfor; ?>
-                </tbody>
-            </table>
+            <?php buildFunctionsTable($rows,$cols,$table); ?>
+
             <br>
         </li>
         <li>
             <?php $isMinimized = false;?>
             <h1>#2 Позбуваємось негативних чисел в правій частині <?php if($resultRow[$cols - 2] == "min") {echo "та приводимо до максимуму"; $isMinimized=true;}?></h1>
-<!--                Зробити домноження на -1 крім зміна min на max-->
-
             <p style="font-size: 20px">
                 <b><?php
                     if($isMinimized){
@@ -160,44 +121,8 @@ $j = 0;
             }
             ?>
 
-<!--            Запихнути в функцію-->
-            <table>
-                <tbody>
-                <?php for ($i = 0; $i < $rows; $i++): ?>
-                    <tr>
-                        <?php for ($j = 0; $j < $cols - 2; $j++): ?>
-                            <td class="sign">
-                                <?php
-                                if ($table[$i][$j] < 0) echo '-';
-                                elseif ($j != 0) echo "+";
-                                else echo " " ?>
-                            </td>
-                            <td class="coef">
-                                <?php $coef = $table[$i][$j] * (($table[$i][$j] < 0) ? (-1) : 1);
-                                $isZero = false;
-                                if ($coef == 1) echo " ";
-                                elseif ($coef == 0) {
-                                    $isZero = true;
-                                    echo " ";
-                                } else echo $coef;
-                                ?>
-                            </td>
-                            <td class="index">
-                                <?php if (!$isZero): ?>
-                                    x<sub><?php echo $j + 1; ?></sub>
-                                <?php endif; ?>
-                            </td>
-                        <?php endfor; ?>
-                        <td class="equal">
-                            <?php echo returnSign($table[$i][count($table[$i]) - 2]); ?>
-                        </td>
-                        <td class="equal result">
-                            <?php echo $table[$i][count($table[$i]) - 1] ?>
-                        </td>
-                    </tr>
-                <?php endfor; ?>
-                </tbody>
-            </table>
+            <?php buildFunctionsTable($rows,$cols,$table); ?>
+
             <br>
         </li>
         <li>
@@ -255,44 +180,13 @@ $j = 0;
                 }
                 debugToConsole($debugRes);
             }
-
+            for ($i = 0; $i < $rows; $i++){
+                $basisTable[$i][$basisTableCols-2] = 0;
+            }
             ?>
-            <!--            Запихнути в функцію-->
-            <table>
-                <tbody>
-                <?php for ($i = 0; $i < $rows; $i++): ?>
-                    <tr>
-                        <?php for ($j = 0; $j < $basisTableCols - 1; $j++): ?>
-                            <td class="sign">
-                                <?php
-                                if ($basisTable[$i][$j] < 0) echo '-';
-                                elseif ($j != 0) echo "+";
-                                else echo " " ?>
-                            </td>
-                            <td class="coef">
-                                <?php $coef = $basisTable[$i][$j] * (($basisTable[$i][$j] < 0) ? (-1) : 1);
-                                $isZero = false;
-                                if ($coef == 1) echo " ";
-                                elseif ($coef == 0) {
-                                    $isZero = true;
-                                    echo " ";
-                                } else echo $coef;
-                                ?>
-                            </td>
-                            <td class="index">
-                                <?php if (!$isZero): ?>
-                                    x<sub><?php echo $j + 1; ?></sub>
-                                <?php endif; ?>
-                            </td>
-                        <?php endfor; ?>
-                        <td class="equal">=</td>
-                        <td class="equal result">
-                            <?php echo $basisTable[$i][count($basisTable[$i]) - 1] ?>
-                        </td>
-                    </tr>
-                <?php endfor; ?>
-                </tbody>
-            </table>
+
+            <?php buildFunctionsTable($rows,$basisTableCols + 1,$basisTable); ?>
+
         </li> <br>
         <h1>#5 Вирішуємо за допомогою симплекс-таблиці</h1>
         <?php simplexMethodMain($basisTable, $resultRow, $basisTableCols, $rows); ?>
