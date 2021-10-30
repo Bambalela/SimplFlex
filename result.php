@@ -7,7 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-    <?php require "symplexFunctions.php"?>
+    <?php
+    //require "symplexFunctions.php";
+    require "symplexDoubled.php";
+    ?>
     <title>Симплекс метод</title>
 </head>
 
@@ -16,8 +19,8 @@ session_start();
 $rows = $_SESSION["functionRows"];
 $cols = $_SESSION["functionCols"] + 2;
 
-$table = [$rows][$cols];
-$resultRow = [$cols - 1];
+/*$table = [$rows][$cols];
+$resultRow = [$cols - 1];*/
 
 $i = 0;
 $j = 0;
@@ -130,6 +133,7 @@ $j = 0;
         ?>
 
     </ol>
+
 </div>
 
 </body>
