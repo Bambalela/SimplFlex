@@ -1,6 +1,7 @@
 <?php
 
-function buildFunctionsTable($rows,$cols,$table){
+function buildFunctionsTable($rows,$cols,$table, $withY = false, $useY = false){
+    $letter = (($useY)? 'y' : 'x');
     echo "<table>";
                 echo "<tbody>";
                 for ($i = 0; $i < $rows; $i++){
@@ -22,7 +23,7 @@ function buildFunctionsTable($rows,$cols,$table){
                             echo "</td>";
                             echo "<td class='index'>";
                                 if (!$isZero){
-                                    echo "x<sub>" . ($j + 1) . "</sub>";
+                                    echo "$letter<sub>" . ($j + 1) . "</sub>";
                                 }
                             echo "</td>";
                         }
@@ -34,26 +35,33 @@ function buildFunctionsTable($rows,$cols,$table){
                         echo "<td class='equal result'>";
                             echo $table[$i][count($table[$i]) - 1];
                         echo "</td>";
+                        if($withY){
+                            echo "<td class='equal result'>";
+                                echo "| y<sub>" . ($i + 1) . "</sub>";
+                            echo "</td>";
+                        }
                     echo "</tr>";
                 }
                 echo "</tbody>";
             echo "</table>";
 }
 
-function buildFunction($cols, $resultRow){
-    echo "<p style='font-size: 20px'>";
-            echo "<b>" . (($resultRow[$cols - 2] == "min") ? "Мінімізувати" : "Максимізувати") . ': ' ."</b>";
-                if ($resultRow[0] == 1) echo "x<sub>1</sub>";
-                elseif ($resultRow[0] == -1) echo "-x<sub>1</sub>";
-                else echo $resultRow[0] . "x<sub>1</sub>";
+function buildFunction($cols, $resultRow, $withDirection = true, $useY = false){
+    $letter = (($useY)? 'y' : 'x');
 
-        for ($i = 1; $i <= count($resultRow) - 2; $i++) {
-            if ($resultRow[$i] == 1) echo " +x<sub>" . ($i + 1) . "</sub>";
-            elseif ($resultRow[$i] == -1) echo " -x<sub>" . ($i + 1) . "</sub>";
-            elseif ($resultRow[$i] < 0) echo ' ' . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
-            else echo " +" . $resultRow[$i] . "x<sub>" . ($i + 1) . "</sub>";
+    if($withDirection) echo "<p style='font-size: 20px'>";
+    if($withDirection) echo "<b>" . (($resultRow[$cols - 2] == "min") ? "Мінімізувати" : "Максимізувати") . ': ' ."</b>";
+                if ($resultRow[0] == 1) echo "$letter<sub>1</sub>";
+                elseif ($resultRow[0] == -1) echo " - $letter<sub>1</sub>";
+                else echo $resultRow[0] . "$letter<sub>1</sub>";
+        for ($i = 1; $i <= ((!$useY)? (count($resultRow) - 2) : count($resultRow) - 1 ); $i++) {
+        //for ($i = 1; $i <= count($resultRow) - 2; $i++) {
+            if ($resultRow[$i] == 1) echo " + $letter<sub>" . ($i + 1) . "</sub>";
+            elseif ($resultRow[$i] == -1) echo " - $letter<sub>" . ($i + 1) . "</sub>";
+            elseif ($resultRow[$i] < 0) echo ' ' . $resultRow[$i] . "$letter<sub>" . ($i + 1) . "</sub>";
+            else echo " + " . $resultRow[$i] . "$letter<sub>" . ($i + 1) . "</sub>";
         }
-    echo "</p>";
+    if($withDirection) echo "</p>";
 }
 
 function makeBasisTable($rows, $cols, $table){

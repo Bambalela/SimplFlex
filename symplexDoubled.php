@@ -165,6 +165,89 @@ function DoubledSimplex($electedCol, $electedRow, $ORow, $table, $resultRow){
         $table = $tempTable;
         //break;
     }
+
+    return array('table' => $table, 'basisTable' => $basisIndexes, 'resultRow' => $resultRow);
+}
+
+function transpose($table, $resultRow){
+    for($j = 0; $j < count($table[0]) - 2; $j++){
+        for($i = 0; $i < count($table); $i++){
+            $transposedTable[$j][$i] = $table[$i][$j];
+        }
+        $transposedTable[$j][count($table)] = 1;
+        $transposedTable[$j][count($table) + 1] = $resultRow[$j];
+    }
+
+    buildFunctionsTable(count($transposedTable),count($transposedTable[0]),$transposedTable, false, true);
+
+    for($i = 0; $i < count($table); $i++){
+        $transposedFunctionTable[$i] = $table[$i][count($table[0]) - 1];
+    }
+
+    return $transposedFunctionTable;
+}
+
+function buildResults($beginTable, $resultTable, $basisIndexes, $resultRow){
+    echo "<li>";
+        echo "<div class='container' style='background-color: #d3d3d3; border-radius: 10px;'> ";
+            echo "<p style='font-size: 20px'>Результат Виконання:</p>";
+            echo "<p>Х<sub>опт</sub> = ( ";
+            $haveBeenOutputed = false;
+            for($i = 0; $i < count($basisIndexes[1]); $i++)
+            {
+                if($basisIndexes[1][$i] != 0) {
+                    if($haveBeenOutputed) echo '; ';
+                    echo $resultTable[$i][0] . ' ';
+                    $haveBeenOutputed = true;
+                }
+            }
+            echo ")</p>";
+
+            echo "<p>";
+                $toMaximize = false;
+                if($resultRow[count($resultRow) - 1] == "max") $toMaximize = true;
+                    echo "ƒ<sub>min</sub> = ";
+                if($toMaximize) echo "-ƒ<sub>max</sub> = -( ";
+                    echo $resultTable[count($resultTable) - 1][0];
+                if($toMaximize) echo " ) = " . -1 * $resultTable[count($resultTable) - 1][0];
+            echo "</p>";
+
+            echo "<p>ƒ = ";
+                buildFunction(count($resultRow), $resultRow, false);
+            echo " → " . $resultRow[count($resultRow) - 1];
+            echo "</p>";
+
+            echo "<p>";
+                buildFunctionsTable(count($beginTable), count($beginTable[0]), $beginTable, true);
+            echo "</p>";
+            echo "<p>";
+                $arr = transpose($beginTable, $resultRow);
+            echo "</p>";
+            echo "<p>ƒ = ";
+                buildFunction(count($arr), $arr, false, true);
+                echo " → min";
+            echo "</p>";
+            echo "<p>y<sub>опт</sub> = ( ";
+                $haveBeenOutputed = false;
+                for($i = count($beginTable) - 2, $j = 0; $i < count($resultTable[0]); $i++, $j++)
+                {
+                    if($haveBeenOutputed) echo '; ';
+                    echo $resultTable[count($resultTable) - 1][$i];
+                    $yoTable[$j] = $resultTable[count($resultTable) - 1][$i];
+                    $haveBeenOutputed = true;
+                }
+            echo " )</p>";
+        debugToConsole("");
+            echo "<p>Z<sub>min</sub> ≈ ";
+            $rez = 0;
+                for($i = 0; $i < count($arr); $i++){
+                    $rez += $arr[$i] * $yoTable[$i];
+                    debugToConsole($arr[$i] . ' ' . $yoTable[$i]);
+                }
+
+            echo "$rez</p>";
+        echo "</div>";
+    echo "</li>";
 }
 
 function doubledSimplexMethodMain($table, $resultRow){
@@ -209,7 +292,9 @@ function doubledSimplexMethodMain($table, $resultRow){
     for($i = 0;$i < count($ORow); $i++) if($ORow[$i] == $electedNumber){ $electedCol = $i + 1; break; }
     debugToConsole("elected col ".$electedCol);
 
-    DoubledSimplex($electedCol, $electedRow, $ORow, $simplexTable, $resultRow);
+    $result = DoubledSimplex($electedCol, $electedRow, $ORow, $simplexTable, $resultRow);
+
+    buildResults($_SESSION['table'], $result['table'], $result['basisTable'], $result['resultRow']);
 }
 
 function dealWithDoubled($table, $resultRow){
@@ -227,6 +312,7 @@ function dealWithDoubled($table, $resultRow){
         }
         buildFunction($cols, $resultRow);
         buildFunctionsTable($rows, $cols, $table);
+        $_SESSION['table'] = $table;
     echo "</li> <br>";
 
     echo "<li>";
