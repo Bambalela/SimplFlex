@@ -1,13 +1,24 @@
 <?php
 require "symplexFunctions.php";
 
+function testDebugMatrix($table){
+    debugToConsole("");
+    debugToConsole("tested table:");
+    for ($i=0;$i<count($table); $i++) {
+        $debugRes = "";
+        for ($j=0;$j<count($table[$i]);$j++) {
+            $debugRes .= ($table[$i][$j] . " ");
+        }
+        debugToConsole($debugRes);
+    }
+}
+
 function doubledSimplexMethodMain($table, $resultRow){
     $rows = count($table);
     $cols = count($table[0]);
 
     for($i = 0;$i < $rows; $i++)
     {
-        $debugRes = "";
         $simplexTable[$i][0] = $table[$i][$cols-1];
         for($j = 1;$j < $cols - 1; $j++)
         {
@@ -19,7 +30,7 @@ function doubledSimplexMethodMain($table, $resultRow){
     $simplexTable[$rows][0] = 0;
     for($i = 0;$i < count($resultRow) - 1; $i++)
     {
-        $simplexTable[$rows][$i + 1] = $resultRow[$i];
+        $simplexTable[$rows][$i + 1] = -$resultRow[$i];
     }
     for($i = count($resultRow);$i < $cols; $i++)
     {
@@ -31,6 +42,18 @@ function doubledSimplexMethodMain($table, $resultRow){
     $electedNumber = min($tempArr);
     for($i = 0;$i < $rows; $i++) if($tempArr[$i] == $electedNumber){ $electedRow = $i; break; }
     debugToConsole("elected row " . $electedRow);
+
+    for($i = 1; $i < $cols - 1; $i++){
+        try{
+            if($simplexTable[$rows][$i] == 0) throw new Exception;
+        $ORow[$i - 1] = -$simplexTable[$rows][$i]/$simplexTable[$electedRow][$i];
+            } catch (Exception $e){
+            $ORow[$i - 1] = 0;
+        }
+    }
+   for($i = 0; $i < count($ORow);$i++){
+       debugToConsole($ORow[$i]);
+   }
 
 }
 

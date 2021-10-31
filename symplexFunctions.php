@@ -210,8 +210,9 @@ function SimplexMethod($table1, $electedCol, $electedRow, $resultRow, $basis)
 
         for($i = 0; $i < count($table2)-1;$i++) {
             try {
+                if($table2[$i][0] == 0) throw new Exception;
                 $lastCol[$i] = round($table2[$i][0] / $table2[$i][$electedCol], 2);
-            } catch(DivisionByZeroError $e) {
+            } catch(Exception $e) {
                 $lastCol[$i] = 0;
             }
         }
@@ -270,9 +271,10 @@ function simplexMethodMain($table, $resultRow, $cols, $rows)
     for ($i = 0; $i <= $rows; $i++) $minColArr[$i] = $basisTable[$i][$electedCol];
     for ($i = 0; $i < $rows; $i++) {
         try {
+            if($table[$i][count($table[$i]) - 1] == 0) throw new Exception;
             $lastCol[$i] = $table[$i][count($table[$i]) - 1] / $minColArr[$i];
             if ($lastCol[$i] < 0) $lastCol[$i] = 0;
-        } catch (DivisionByZeroError $e)
+        } catch (Exception $e)
         {
             $lastCol[$i] = 0;
         }
